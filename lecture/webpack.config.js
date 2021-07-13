@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
     name: 'wordrelay-setting',
     mode: 'development',//실서비스에서는 production
-    devtool: 'eval',
+    devtool: 'eval',//production일때는 hidden-source-map사용
     resolve:{
         extensions:['.js','.jsx']//js나 jsx파일 확장자 있는지 찾아
     },
