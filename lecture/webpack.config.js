@@ -1,5 +1,5 @@
 const path = require('path');
-
+const RefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 module.exports = {
     name: 'wordrelay-setting',
     mode: 'development',//실서비스에서는 production
@@ -21,13 +21,32 @@ module.exports = {
             test: /\.jsx?/,
             loader:'babel-loader', //js나jsx파일에 바벨로더를 적용해 최신문법이 옛날 브라우저에서도 돌아갈 수 있도록 해줌
             options:{
-                presets:['@babel/preset-env','@babel/preset-react'],
+                presets:[
+                    ['@babel/preset-env',{
+                        targets:{
+                            browsers : ['> 1% in KR'],//한국에서 점유율1%넘는 브라우저만 지원하도록
+                            //browserslist참고해서 요구사항에 맞게 브라우저 설정
+                        },
+                    }],
+                    '@babel/preset-react'
+                ],
+                plugins:[
+                    '@babel/plugin-proposal-class-properties',
+                    'react-refresh/babel',
+                ],
             },
         }],
     },
-
+    plugins:[
+        new RefreshWebpackPlugin()
+    ],
     output : {
         path: path.join(__dirname,'dist'), //__dirname은 현재폴더(lecture)
         filename: 'app.js',
+        publicPath:'/dist',
     }, //출력
+    devServer : {
+        publicPath:'/dist/',
+        hot:true,
+    },
 }
